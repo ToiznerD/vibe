@@ -1,10 +1,14 @@
+import { trpc, getQueryClient } from '@/trpc/server';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import Client from './client';
 
 const Page = async () => {
-
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(trpc.hello.queryOptions({ text: "dor" }));
   return ( 
-    <div>
-      f
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Client />
+    </HydrationBoundary>
    );
 }
  
